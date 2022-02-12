@@ -1,0 +1,87 @@
+@font-face {
+  font-family: "Outfit";
+  src: url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap') format("truetype");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Outfit;
+}
+
+th, td {
+  border: none;
+}
+
+:root {
+  --primary: #743AC2;
+  --pastel: #f9f5ff;
+  --light: #FFF;
+  --gray: #f3f3f3;
+}
+
+.menu {
+  height: 100vh;
+  background-color: var(--light);
+}
+
+.content {
+  background-color: var(--gray);
+}
+
+.menu-item {
+  color: #acacac;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all .5s;
+  cursor: pointer;
+  border-left: 10px solid transparent;
+}
+
+.menu-item:hover {
+  color: var(--primary);
+  border-left: 10px solid var(--primary);
+  background-color: var(--pastel);
+}
+
+.filter {
+  height: 10vh;
+}
+
+.contant-table {
+  border-radius: 10px;
+  background-color: var(--light);
+  height: 85vh;
+}
+
+.table thead {
+  background-color: #e4e4e4;
+}
+
+.table tbody tr:nth-child(2n) {
+  background-color: var(--gray);
+}
+
+.table td,
+.table th {
+  padding: 20px 15px 10px 15px;
+}
+
+.table tbody tr {
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.table tbody tr:hover {
+  transform: scaleX(1.01);
+}
+
+.avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--light);
+  margin-left: -15px;
+}

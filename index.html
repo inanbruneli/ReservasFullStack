@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservas Full Stack</title>
+
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="menu col-2 p-3">
+        <h4 class="mb-5 text-center">Reservas</h4>
+
+        <div class="row p-3 menu-item">
+          <div class="col-2">
+            <i class="fa-solid fa-user-group"></i>
+          </div>
+          <h5 class="col-6 mt-2">Usuário</h5>
+        </div>
+
+        <div class="row p-3 menu-item">
+          <div class="col-2">
+            <i class="fa-solid fa-bed"></i>
+          </div>
+          <h5 class="col-6 mt-2">Sala</h5>
+        </div>
+
+        <div class="row p-3 menu-item">
+          <div class="col-2">
+            <i class="fa-solid fa-hotel"></i>
+          </div>
+          <h5 class="col-6 mt-2">Reserva</h5>
+        </div>
+      </div>
+      <div class="col-10 content px-5">
+        <div class="col-12 filter py-3">
+          <h4>Agendamento de salas</h4>
+          <h6>Adicione, edite ou exclua agendamentos aqui</h6>
+        </div>
+        <div class="col-12 contant-table p-5">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Horário</th>
+                <th>Término</th>
+                <th>Sala</th>
+                <th>Participantes</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>10:30</td>
+                <td>20:00</td>
+                <td>Sala 1</td>
+                <td class="avatar">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                </td>
+                <td><span class="badge badge-danger">Atrasado</span></td>
+              </tr>
+              <tr>
+                <td>01:15</td>
+                <td>11:00</td>
+                <td>Sala 1</td>
+                <td class="avatar">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                </td>
+                <td><span class="badge badge-success">Entregue</span></td>
+              </tr>
+              <tr>
+                <td>09:30</td>
+                <td>15:00</td>
+                <td>Sala 3</td>
+                <td class="avatar">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                </td>
+                <td><span class="badge badge-warning">Sem resposta</span></td>
+              </tr>
+              <tr>
+                <td>20:00</td>
+                <td>01:00</td>
+                <td>Sala 2</td>
+                <td class="avatar">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                </td>
+                <td><span class="badge badge-success">Entregue</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+
+<script src="https://kit.fontawesome.com/3528ad562d.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.2/umd/popper.min.js"></script>
+<script src="bootstrap/js/bootstrap.js"></script>
+
+</html>
