@@ -50,31 +50,31 @@ th, td {
   height: 10vh;
 }
 
-.contant-table {
+.contant-table-reserva {
   border-radius: 10px;
   background-color: var(--light);
   height: 85vh;
 }
 
-.table thead {
+.table-reserva thead {
   background-color: #e4e4e4;
 }
 
-.table tbody tr:nth-child(2n) {
+.table-reserva tbody tr:nth-child(2n) {
   background-color: var(--gray);
 }
 
-.table td,
-.table th {
+.table-reserva td,
+.table-reserva th {
   padding: 20px 15px 10px 15px;
 }
 
-.table tbody tr {
+.table-reserva tbody tr {
   cursor: pointer;
   transition: all .3s;
 }
 
-.table tbody tr:hover {
+.table-reserva tbody tr:hover {
   transform: scaleX(1.01);
 }
 
@@ -84,4 +84,13 @@ th, td {
   border-radius: 50%;
   border: 2px solid var(--light);
   margin-left: -15px;
+  margin-top: -5px;
+}
+
+.table-reserva-user tr td:nth-child(1) {
+  text-align: center;
+}
+
+.select-tr {
+  background-color: var(--pastel);
 }

@@ -12,13 +12,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body onload="load()">
   <div class="container-fluid">
     <div class="row">
       <div class="menu col-2 p-3">
         <h4 class="mb-5 text-center">Reservas</h4>
 
-        <div class="row p-3 menu-item">
+        <div class="row p-3 menu-item" onclick="modalReserva();">
           <div class="col-2">
             <i class="fa-solid fa-user-group"></i>
           </div>
@@ -45,7 +45,7 @@
           <h6>Adicione, edite ou exclua agendamentos aqui</h6>
         </div>
         <div class="col-12 contant-table p-5">
-          <table class="table">
+          <table class="table table-reserva">
             <thead>
               <tr>
                 <th>Horário</th>
@@ -62,7 +62,7 @@
                 <td>Sala 1</td>
                 <td class="avatar">
                   <img src="assets/images/inan.jpg" alt="" srcset="">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                  <img src="assets/images/victor.jpg" alt="" srcset="">
                   <img src="assets/images/inan.jpg" alt="" srcset="">
                 </td>
                 <td><span class="badge badge-danger">Atrasado</span></td>
@@ -102,11 +102,151 @@
       </div>
     </div>
   </div>
+
+  <div class="modal" tabindex="-1" role="dialog" id="modal-reserva">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edição de reserva</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+
+            <div class="col-6 input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa-solid fa-calendar-plus"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Horário" id="horario">
+            </div>
+
+            <div class="col-6 input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa-solid fa-calendar-check"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Término" id="termino">
+            </div>
+
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fa-solid fa-hotel"></i></span>
+            </div>
+            <select class="custom-select" id="sala">
+              <option selected>Selecione...</option>
+            </select>
+            <div class="input-group-append" onclick="newSala()">
+              <label class="input-group-text" for="inputGroupSelect02"><i class="fa-solid fa-plus"></i></label>
+            </div>
+          </div>
+
+          <table class="table table-hover table-reserva-user">
+            <tbody>
+              <tr onclick="clickUser(this)">
+                <td>Inan Brunelli</td>
+                <td class=" avatar">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                </td>
+              </tr>
+              <tr onclick="clickUser(this)">
+                <td>Victor Gomes</td>
+                <td class=" avatar">
+                  <img src="assets/images/victor.jpg" alt="" srcset="">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <button type="button" class="btn btn-primary" onclick="newUsuario();" id="btn-add-user">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" id="btn-del-user" onclick="delUser();">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="btn-save">Salvar alterações</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" id="modal-sala">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cadastro de sala</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa-solid fa-calendar-check"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Descrição" id="descricao-sala">
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="saveSala()">Adicionar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" id="modal-usuario">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Adicionar usuário à reserva</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-hover table-reserva-user">
+            <tbody>
+              <tr onclick="clickUser(this)">
+                <td>Inan Brunelli</td>
+                <td class=" avatar">
+                  <img src="assets/images/inan.jpg" alt="" srcset="">
+                </td>
+              </tr>
+              <tr onclick="clickUser(this)">
+                <td>Victor Gomes</td>
+                <td class=" avatar">
+                  <img src="assets/images/victor.jpg" alt="" srcset="">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="saveUsuario()">Adicionar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
-
-
 <script src="https://kit.fontawesome.com/3528ad562d.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.2/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="bootstrap/js/bootstrap.js"></script>
+<script src="assets/script.js"></script>
 
 </html>
