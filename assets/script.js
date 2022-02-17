@@ -1,103 +1,38 @@
-let dadosReservas = [
-  {
-    id: 1,
-    horario: '11:30',
-    termino: '20:00',
-    idsala: 1,
-    participantes: [1, 2],
-    status: 'Atrasado'
-  },
-  {
-    id: 2,
-    horario: '01:15',
-    termino: '11:00',
-    idsala: 1,
-    participantes: [1],
-    status: 'Entregue'
-  },
-  {
-    id: 3,
-    horario: '09:30',
-    termino: '15:00',
-    idsala: 3,
-    participantes: [3],
-    status: 'Sem resposta'
-  },
-  {
-    id: 4,
-    horario: '20:30',
-    termino: '01:00',
-    idsala: 4,
-    participantes: [1, 2, 3],
-    status: 'Entregue'
-  },
-];
-
-let dadosSala = [
-  {
-    id: 1,
-    descricao: 'Sala 01',
-  },
-  {
-    id: 2,
-    descricao: 'Sala 02',
-  },
-  {
-    id: 3,
-    descricao: 'Sala 03',
-  },
-  {
-    id: 4,
-    descricao: 'Sala 04',
-  },
-]
-
-let dadosParticipante = [
-  {
-    id: 1,
-    nome: 'Inan Brunelli',
-    foto: 'inan.jpg'
-  },
-  {
-    id: 2,
-    nome: 'Victor Gomes',
-    foto: 'victor.jpg'
-  },
-  {
-    id: 3,
-    nome: 'Marcos Macedo',
-    foto: 'marcos.jpg'
-  },
-]
-
 let gbreserva = '';
 
-function load() {
-  //modalReserva();
+async function load() {
   loadReserva();
   loadSala();
 }
 
-function loadReserva() {
+async function loadReserva() {
   $('.table tbody').empty();
-  $.each(dadosReservas, (i, dados) => {
+  let reservas = await axios.get('http://localhost:3000/reservas');
+  reservas = reservas.data;
+
+  $.each(reservas, async function (i, dados) {
     let avatar = '';
-    for (const user of dados.participantes) {
-      let select = dadosParticipante.find(item => item.id === user);
-      avatar += `<img src="assets/images/${select.foto}" alt="${select.nome}">`;
+
+    let participantes = await axios.get('http://localhost:3000/participantes_sala/' + dados.idreserva);
+    participantes = participantes.data;
+    for (const user of participantes) {
+      avatar += `<img src="assets/images/${user.foto}" alt="${user.nome}">`;
     }
-    const badge = dados.status == 'Entregue' ? 'success' : dados.status == 'Atrasado' ? 'danger' : 'warning';
-    const sala = dadosSala.find(item => item.id === dados.idsala);
 
     let item =
-      `<tr onclick='clickReserva(${dados.id})'>
+      `<tr ondblclick='clickReserva(${dados.idreserva})'>
         <td>${dados.horario}</td>
         <td>${dados.termino}</td>
-        <td>${sala.descricao}</td>
+        <td>${dados.descricao}</td>
         <td class="avatar">
           ${avatar}
         </td>
-        <td><span class="badge badge-${badge}">${dados.status}</span></td>
+        <td class="avatar">
+          <div class="input-group-append" onclick="deleteReserva(${dados.idreserva})">
+            <label class="input-group-text btndel"><i class="fas fa-trash-alt"></i></label>
+          </div>
+        </td>
+
       </tr>`;
 
     $('.table-reserva tbody').append(item);
@@ -105,16 +40,26 @@ function loadReserva() {
 
 }
 
+async function deleteReserva(idreserva) {
+  await axios.get('http://localhost:3000/delete_reserva/' + idreserva);
+  await axios.get('http://localhost:3000/delete_reserva_participantes/' + idreserva);
+  alert('success', 'Reserva excluida com sucesso!');
+  loadReserva();
+}
+
 function modalReserva() {
   $('#modal-reserva').modal('show')
 }
 
-function clickReserva(id) {
+async function clickReserva(id) {
   gbreserva = id;
   $('#btn-save').html('Salvar Alterações');
-  let dados = dadosReservas.find(item => item.id === id);
+  $('#title-reserva').html('Edição de reserva');
+
+  let dados = await axios.get('http://localhost:3000/reservas/' + id);
+  dados = dados.data[0];
+
   $('#horario').val(dados.horario);
-  $('#termino').val(dados.termino);
   $('#termino').val(dados.termino);
   $('#sala').val(dados.idsala);
 
@@ -122,17 +67,20 @@ function clickReserva(id) {
   modalReserva();
 }
 
-function loadSala() {
+async function loadSala() {
   $('#sala').empty();
+  let salas = await axios.get('http://localhost:3000/salas');
+  salas = salas.data;
+
   let divSala = '';
-  for (const item of dadosSala) {
-    divSala += `<option value="${item.id}">${item.descricao}</option>`;
+  for (const item of salas) {
+    divSala += `<option value="${item.idsala}">${item.descricao}</option>`;
   }
 
   $('#sala').append(divSala);
 }
 
-function newSala() {
+function novaSala() {
   $('#modal-reserva').modal('hide');
   $('#descricao-sala').val('');
   $('#modal-sala').modal('show');
@@ -144,18 +92,18 @@ function closeSala() {
   $('#modal-reserva').modal('show');
 }
 
-function saveSala() {
+async function saveSala() {
   if (!$('#descricao-sala').val()) alert('error', 'Digite todos os campos!');
   else {
-    let objSala = {
-      descricao: $('#descricao-sala').val(),
-      id: dadosSala[dadosSala.length - 1].id + 1
-    }
-    dadosSala.push(objSala);
+
+    await axios.get('http://localhost:3000/nova_sala/' + $('#descricao-sala').val());
+    let dados = await axios.get('http://localhost:3000/ultima_sala');
+    dados = dados.data[0];
+
     loadSala();
     alert('success', 'Salvo com sucesso');
 
-    $('#sala').val(objSala.id);
+    $('#sala').val(dados.idsala);
     $('#modal-sala').modal('hide');
     $('#modal-reserva').modal('show');
   }
@@ -172,17 +120,18 @@ function clickUser(el) {
   $('#btn-del-user').addClass(add);
 }
 
-function delUser() {
+async function delUser() {
   if ($('.select-tr').length == 0) {
     alert('error', 'Nenhum usuário selecionado!');
     return
   }
 
-  let newUsers = dadosReservas.find(item => item.id == gbreserva).participantes;
+  let idDelete = '';
   $.each($('.select-tr'), (i, el) => {
-    newUsers = newUsers.filter(item => item != el.id);
+    idDelete += el.id + ',';
   });
-  dadosReservas.find(item => item.id == gbreserva).participantes = newUsers;
+  idDelete = idDelete.slice(0, idDelete.length - 1);
+  await axios.get('http://localhost:3000/delete_participantes/' + idDelete + '&' + gbreserva);
 
   loadUsers(gbreserva);
   $('#btn-del-user').removeClass('btn-warning');
@@ -190,68 +139,88 @@ function delUser() {
   alert('success', 'Usuário(s) deletado(s) com sucesso!');
 }
 
-function loadUsers(id) {
+async function loadUsers(id) {
   $('.table-reserva-user tbody').empty();
-  let dados = dadosReservas.find(item => item.id === id);
+
+  let dados = await axios.get('http://localhost:3000/participantes_reserva/' + id);
+  dados = dados.data;
+
   let divParticipante = '';
-  for (const user of dados.participantes) {
-    let select = dadosParticipante.find(item => item.id === user);
+  for (const user of dados) {
     divParticipante += `
-      <tr onclick="clickUser(this)" id='${select.id}'>
-        <td>${select.nome}</td>
+      <tr onclick="clickUser(this)" id='${user.idparticipante}'>
+        <td>${user.nome}</td>
         <td class="avatar">
-          <img src="assets/images/${select.foto}" alt="${select.nome}">
+          <img src="assets/images/${user.foto}" alt="${user.nome}">
         </td>
       </tr>`;
   }
   $('.table-reserva-user tbody').append(divParticipante);
 }
 
-function newUsuario() {
+function novaUsuario() {
   loadNewUser();
 
   $('#modal-reserva').modal('hide');
   $('#modal-usuario').modal('show');
 }
 
-function loadNewUser() {
+async function loadNewUser() {
   $('.table-select-user tbody').empty();
-  let usersReserva = dadosReservas.find(item => item.id === gbreserva);
-  usersReserva = usersReserva.participantes;
+  let dados = await axios.get('http://localhost:3000/perticipantes_disponiveis/' + gbreserva);
+  dados = dados.data;
 
   let divParticipante = '';
-  for (const user of dadosParticipante) {
-    let find = usersReserva.indexOf(user.id);
-    if (find != 0) {
-      console.log(user.nome)
-      divParticipante += `
-      <tr onclick="clickUser(this)" id='${user.id}'>
-        <td>${user.nome}</td>
-        <td class="avatar">
-          <img src="assets/images/${user.foto}" alt="${user.nome}">
-        </td>
-      </tr>`;
-    }
+  for (const user of dados) {
+    divParticipante += `
+    <tr onclick="addUser(${user.idparticipante})" id='${user.idparticipante}'>
+      <td>${user.nome}</td>
+      <td class="avatar">
+        <img src="assets/images/${user.foto}" alt="${user.nome}">
+      </td>
+    </tr>`;
   }
 
   $('.table-select-user tbody').append(divParticipante);
 }
 
-function salvarAlteracoes() {
-  let posicao = dadosReservas.find(item => item.id === gbreserva);
+async function addUser(idparticipante) {
+  await axios.get(`http://localhost:3000/novo_participante/${idparticipante}&${gbreserva}&${$('#sala').val()}`);
+  alert('success', 'Salvo com sucesso');
 
-  let bingo = {
-    id: posicao.id,
-    horario: $('#horario').val(),
-    termino: $('#termino').val(),
-    idsala: Number($('#sala').val()),
-    participantes: posicao.participantes,
-    status: posicao.status
-  }
+  loadUsers(gbreserva);
+  closeParceiro();
+}
 
-  dadosReservas[posicao.id - 1] = bingo;
+function closeParceiro() {
+  $('#modal-usuario').modal('hide');
+  $('#modal-reserva').modal('show');
+}
+
+async function salvarAlteracoes() {
+  let horario = $('#horario').val();
+  let termino = $('#termino').val();
+  let idsala = $('#sala').val();
+  await axios.get(`http://localhost:3000/update_reserva/${horario}&${termino}&${idsala}&${gbreserva}`);
+
   loadReserva();
+  alert('success', 'Salvo com sucesso');
   $('#modal-reserva').modal('hide');
+}
+
+async function novaReserva() {
+  await axios.get('http://localhost:3000/nova_reserva/');
+  let dados = await axios.get('http://localhost:3000/ultima_reserva/');
+  dados = dados.data[0];
+  gbreserva = dados.idreserva;
+
+  $('#horario').val('');
+  $('#termino').val('');
+  $('#sala').val(1);
+  $('.table-reserva-user tbody').empty();
+  $('#btn-save').html('Cadastrar');
+  $('#title-reserva').html('Cadastro de reserva');
+  $('#modal-reserva').modal('show');
 }
 
 function alert(param, descricao) {

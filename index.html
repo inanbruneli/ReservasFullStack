@@ -13,101 +13,53 @@
 </head>
 
 <body onload="load()">
+
   <div class="container-fluid">
     <div class="row">
-      <div class="menu col-2 p-3">
-        <h4 class="mb-5 text-center">Reservas</h4>
 
-        <div class="row p-3 menu-item" onclick="modalReserva();">
-          <div class="col-2">
-            <i class="fa-solid fa-user-group"></i>
-          </div>
-          <h5 class="col-6 mt-2">Usuário</h5>
-        </div>
+      <div class="col-12 row mt-5">
+        <div class="col-1"></div>
 
-        <div class="row p-3 menu-item">
-          <div class="col-2">
-            <i class="fa-solid fa-bed"></i>
-          </div>
-          <h5 class="col-6 mt-2">Sala</h5>
-        </div>
+        <div class="col-10 content ">
+          <div class="row">
+            <div class="col-10 filter py-3">
+              <h4>Agendamento de salas</h4>
+              <h6>Adicione, edite ou exclua agendamentos aqui</h6>
 
-        <div class="row p-3 menu-item">
-          <div class="col-2">
-            <i class="fa-solid fa-hotel"></i>
+            </div>
+            <div class="col-2 mt-3">
+              <button type="button" class="btn btn-primary btnadd" onclick="novaReserva()">Adicionar reserva</button>
+            </div>
           </div>
-          <h5 class="col-6 mt-2">Reserva</h5>
-        </div>
-      </div>
-      <div class="col-10 content px-5">
-        <div class="col-12 filter py-3">
-          <h4>Agendamento de salas</h4>
-          <h6>Adicione, edite ou exclua agendamentos aqui</h6>
-        </div>
-        <div class="col-12 contant-table p-5">
-          <table class="table table-reserva">
-            <thead>
-              <tr>
-                <th>Horário</th>
-                <th>Término</th>
-                <th>Sala</th>
-                <th>Participantes</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>10:30</td>
-                <td>20:00</td>
-                <td>Sala 1</td>
-                <td class="avatar">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
-                  <img src="assets/images/victor.jpg" alt="" srcset="">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
-                </td>
-                <td><span class="badge badge-danger">Atrasado</span></td>
-              </tr>
-              <tr>
-                <td>01:15</td>
-                <td>11:00</td>
-                <td>Sala 1</td>
-                <td class="avatar">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
-                </td>
-                <td><span class="badge badge-success">Entregue</span></td>
-              </tr>
-              <tr>
-                <td>09:30</td>
-                <td>15:00</td>
-                <td>Sala 3</td>
-                <td class="avatar">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
-                </td>
-                <td><span class="badge badge-warning">Sem resposta</span></td>
-              </tr>
-              <tr>
-                <td>20:00</td>
-                <td>01:00</td>
-                <td>Sala 2</td>
-                <td class="avatar">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
-                </td>
-                <td><span class="badge badge-success">Entregue</span></td>
-              </tr>
-            </tbody>
-          </table>
+
+
+          <div class="col-12 contant-table p-5">
+            <table class="table table-reserva">
+              <thead>
+                <tr>
+                  <th>Horário</th>
+                  <th>Término</th>
+                  <th>Sala</th>
+                  <th>Participantes</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 
   <div class="modal" tabindex="-1" role="dialog" id="modal-reserva">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Edição de reserva</h5>
+          <h5 class="modal-title" id="title-reserva">Edição de reserva</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -139,30 +91,19 @@
             <select class="custom-select" id="sala">
               <option selected>Selecione...</option>
             </select>
-            <div class="input-group-append" onclick="newSala()">
+            <div class="input-group-append" onclick="novaSala()">
               <label class="input-group-text"><i class="fa-solid fa-plus"></i></label>
             </div>
           </div>
 
           <table class="table table-hover table-reserva-user">
             <tbody>
-              <tr onclick="clickUser(this)">
-                <td>Inan Brunelli</td>
-                <td class=" avatar">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
-                </td>
-              </tr>
-              <tr onclick="clickUser(this)">
-                <td>Victor Gomes</td>
-                <td class=" avatar">
-                  <img src="assets/images/victor.jpg" alt="" srcset="">
-                </td>
-              </tr>
+
             </tbody>
           </table>
 
 
-          <button type="button" class="btn btn-primary" onclick="newUsuario();" id="btn-add-user">
+          <button type="button" class="btn btn-primary" onclick="novaUsuario();" id="btn-add-user">
             <i class="fa-solid fa-plus"></i>
           </button>
           <button type="button" class="btn btn-secondary" id="btn-del-user" onclick="delUser();">
@@ -224,8 +165,8 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="saveUsuario()">Adicionar</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-secondary" onclick="closeParceiro();"
+            data-dismiss="modal">Fechar</button>
         </div>
       </div>
     </div>
@@ -236,6 +177,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.2/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="bootstrap/js/bootstrap.js"></script>
 <script src="assets/script.js"></script>
 

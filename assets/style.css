@@ -15,10 +15,23 @@ th, td {
 }
 
 :root {
-  --primary: #743AC2;
-  --pastel: #f9f5ff;
+  --primary: #2B45A3;
+  --pastel: #c9d2f3;
   --light: #FFF;
   --gray: #f3f3f3;
+}
+
+body {
+  background-color: var(--primary);
+}
+
+.btndel {
+  background-color: red;
+  color: white;
+}
+
+.btnadd {
+  background-color: var(--primary);
 }
 
 .menu {
