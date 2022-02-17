@@ -140,7 +140,7 @@
               <option selected>Selecione...</option>
             </select>
             <div class="input-group-append" onclick="newSala()">
-              <label class="input-group-text" for="inputGroupSelect02"><i class="fa-solid fa-plus"></i></label>
+              <label class="input-group-text"><i class="fa-solid fa-plus"></i></label>
             </div>
           </div>
 
@@ -171,7 +171,8 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="btn-save">Salvar alterações</button>
+          <button type="button" class="btn btn-primary" onclick="salvarAlteracoes();" id="btn-save">Salvar
+            alterações</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
         </div>
       </div>
@@ -193,14 +194,14 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fa-solid fa-calendar-check"></i></span>
               </div>
-              <input type="text" class="form-control" placeholder="Descrição" id="descricao-sala">
+              <input type="text" class="form-control" maxlength="30" placeholder="Descrição" id="descricao-sala">
             </div>
 
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" onclick="saveSala()">Adicionar</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-secondary" onclick="closeSala();" data-dismiss="modal">Fechar</button>
         </div>
       </div>
     </div>
@@ -216,20 +217,9 @@
           </button>
         </div>
         <div class="modal-body">
-          <table class="table table-hover table-reserva-user">
+          <table class="table table-hover table-reserva-user table-select-user">
             <tbody>
-              <tr onclick="clickUser(this)">
-                <td>Inan Brunelli</td>
-                <td class=" avatar">
-                  <img src="assets/images/inan.jpg" alt="" srcset="">
-                </td>
-              </tr>
-              <tr onclick="clickUser(this)">
-                <td>Victor Gomes</td>
-                <td class=" avatar">
-                  <img src="assets/images/victor.jpg" alt="" srcset="">
-                </td>
-              </tr>
+
             </tbody>
           </table>
         </div>

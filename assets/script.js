@@ -109,17 +109,6 @@ function modalReserva() {
   $('#modal-reserva').modal('show')
 }
 
-function clickUser(el) {
-  if ($(el).hasClass('select-tr')) $(el).removeClass('select-tr');
-  else $(el).addClass('select-tr');
-
-  const remove = $('.select-tr').length === 0 ? 'btn-warning' : 'btn-secondary';
-  const add = $('.select-tr').length === 0 ? 'btn-secondary' : 'btn-warning';
-
-  $('#btn-del-user').removeClass(remove);
-  $('#btn-del-user').addClass(add);
-}
-
 function clickReserva(id) {
   gbreserva = id;
   $('#btn-save').html('Salvar Alterações');
@@ -143,6 +132,18 @@ function loadSala() {
   $('#sala').append(divSala);
 }
 
+function newSala() {
+  $('#modal-reserva').modal('hide');
+  $('#descricao-sala').val('');
+  $('#modal-sala').modal('show');
+  $('#descricao-sala').focus();
+}
+
+function closeSala() {
+  $('#modal-sala').modal('hide');
+  $('#modal-reserva').modal('show');
+}
+
 function saveSala() {
   if (!$('#descricao-sala').val()) alert('error', 'Digite todos os campos!');
   else {
@@ -154,34 +155,21 @@ function saveSala() {
     loadSala();
     alert('success', 'Salvo com sucesso');
 
+    $('#sala').val(objSala.id);
     $('#modal-sala').modal('hide');
     $('#modal-reserva').modal('show');
   }
-
 }
 
-function alert(param, descricao) {
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer)
-      toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-  })
+function clickUser(el) {
+  if ($(el).hasClass('select-tr')) $(el).removeClass('select-tr');
+  else $(el).addClass('select-tr');
 
-  Toast.fire({
-    icon: param,
-    title: descricao
-  })
-}
+  const remove = $('.select-tr').length === 0 ? 'btn-warning' : 'btn-secondary';
+  const add = $('.select-tr').length === 0 ? 'btn-secondary' : 'btn-warning';
 
-function newSala() {
-  $('#modal-reserva').modal('hide');
-  $('#modal-sala').modal('show');
+  $('#btn-del-user').removeClass(remove);
+  $('#btn-del-user').addClass(add);
 }
 
 function delUser() {
@@ -197,6 +185,8 @@ function delUser() {
   dadosReservas.find(item => item.id == gbreserva).participantes = newUsers;
 
   loadUsers(gbreserva);
+  $('#btn-del-user').removeClass('btn-warning');
+  $('#btn-del-user').addClass('btn-secondary');
   alert('success', 'Usuário(s) deletado(s) com sucesso!');
 }
 
@@ -218,7 +208,67 @@ function loadUsers(id) {
 }
 
 function newUsuario() {
+  loadNewUser();
+
   $('#modal-reserva').modal('hide');
   $('#modal-usuario').modal('show');
+}
 
+function loadNewUser() {
+  $('.table-select-user tbody').empty();
+  let usersReserva = dadosReservas.find(item => item.id === gbreserva);
+  usersReserva = usersReserva.participantes;
+
+  let divParticipante = '';
+  for (const user of dadosParticipante) {
+    let find = usersReserva.indexOf(user.id);
+    if (find != 0) {
+      console.log(user.nome)
+      divParticipante += `
+      <tr onclick="clickUser(this)" id='${user.id}'>
+        <td>${user.nome}</td>
+        <td class="avatar">
+          <img src="assets/images/${user.foto}" alt="${user.nome}">
+        </td>
+      </tr>`;
+    }
+  }
+
+  $('.table-select-user tbody').append(divParticipante);
+}
+
+function salvarAlteracoes() {
+  let posicao = dadosReservas.find(item => item.id === gbreserva);
+
+  let bingo = {
+    id: posicao.id,
+    horario: $('#horario').val(),
+    termino: $('#termino').val(),
+    idsala: Number($('#sala').val()),
+    participantes: posicao.participantes,
+    status: posicao.status
+  }
+
+  dadosReservas[posicao.id - 1] = bingo;
+  loadReserva();
+  $('#modal-reserva').modal('hide');
+}
+
+function alert(param, descricao) {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
+  Toast.fire({
+    icon: param,
+    title: descricao
+  })
 }
